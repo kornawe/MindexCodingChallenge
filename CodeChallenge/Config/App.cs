@@ -20,7 +20,9 @@ namespace CodeChallenge.Config
             var builder = WebApplication.CreateBuilder(args);
 
             builder.UseEmployeeDB();
-            
+            builder.UseCompensationDB();
+
+
             AddServices(builder.Services);
 
             var app = builder.Build();
@@ -44,6 +46,8 @@ namespace CodeChallenge.Config
 
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IEmployeeRepository, EmployeeRespository>();
+            services.AddScoped<ICompensationService, CompensationService>();
+            services.AddScoped<ICompensationRepository, CompensationRespository>();
 
             services.AddControllers();
         }
