@@ -27,12 +27,12 @@ namespace CodeChallenge.Controllers
         {
             _logger.LogDebug($"Received reporting structure get request for '{id}'");
 
-            var employee = _reportingStructureService.GetById(id);
+            var reportingStrucrure = _reportingStructureService.GetById(id);
 
-            if (employee == null)
+            if (reportingStrucrure == null)
                 return NotFound();
 
-            return Ok(employee);
+            return Ok(reportingStrucrure);
         }
     }
 }
