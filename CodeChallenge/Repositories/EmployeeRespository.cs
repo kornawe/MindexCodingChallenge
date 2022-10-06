@@ -32,6 +32,24 @@ namespace CodeChallenge.Repositories
             return _employeeContext.Employees.SingleOrDefault(e => e.EmployeeId == id);
         }
 
+        public Employee GetEmplyeeAndReportsById(String id)
+        {
+            var employee = _employeeContext.Employees.Where(e => e.EmployeeId == id)
+                                                    .Include(e => e.DirectReports)
+                                                    .SingleOrDefault();
+            if (employee.DirectReports != null)
+            {
+                // TODO: This is terribly ineffcient, however, I could not find a 
+                // better way to load the data recursively without just loading the
+                // whole table. I would love to know the 'proper' way to do what I am trying.
+                for (int i = 0; i < employee.DirectReports.Count; i++)
+                {
+                    employee.DirectReports[i] = GetEmplyeeAndReportsById(employee.DirectReports[i].EmployeeId);
+                }
+            }
+            return employee;
+        }
+
         public Task SaveAsync()
         {
             return _employeeContext.SaveChangesAsync();
