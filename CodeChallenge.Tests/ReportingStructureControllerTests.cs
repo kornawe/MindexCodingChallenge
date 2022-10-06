@@ -50,6 +50,20 @@ namespace CodeCodeChallenge.Tests.Integration
             Assert.AreEqual(employeeId, reportingStructure.EmployeeId);
         }
 
+        [TestMethod]
+        public void GetReportingStructureById_Returns_NotFOund()
+        {
+            // Arrange
+            var employeeId = "Some fake data";
+
+            // Execute
+            var getRequestTask = _httpClient.GetAsync($"api/reportingStrucure/{employeeId}");
+            var response = getRequestTask.Result;
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
         [DataTestMethod]
         [DataRow("16a596ae-edd3-4847-99fe-c4518e82c86f", 4)]
         [DataRow("03aa1462-ffa9-4978-901b-7c001562cf6f", 2)]

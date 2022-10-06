@@ -37,6 +37,10 @@ namespace CodeChallenge.Repositories
             var employee = _employeeContext.Employees.Where(e => e.EmployeeId == id)
                                                     .Include(e => e.DirectReports)
                                                     .SingleOrDefault();
+            if (employee == null)
+            {
+                return null;
+            }
             if (employee.DirectReports != null)
             {
                 // TODO: This is terribly ineffcient, however, I could not find a 
