@@ -80,7 +80,7 @@ namespace CodeCodeChallenge.Tests.Integration
             // Execute
             var postRequestTask = _httpClient.PostAsync("api/employee/compensation",
                new StringContent(requestContent, Encoding.UTF8, "application/json"));
-            // Post funcitonality should be covered in another test, the result
+            // Post functionality should be covered in another test, the result
             // needs to be collected so that the task finishes execution.
             var postResponse = postRequestTask.Result;
 
@@ -110,7 +110,7 @@ namespace CodeCodeChallenge.Tests.Integration
             // Execute
             var postRequestTask = _httpClient.PostAsync("api/employee/compensation",
                new StringContent(requestContent, Encoding.UTF8, "application/json"));
-            // Post funcitonality should be covered in another test, the result
+            // Post functionality should be covered in another test, the result
             // needs to be collected so that the task finishes execution.
             var postResponse = postRequestTask.Result;
 
@@ -119,7 +119,7 @@ namespace CodeCodeChallenge.Tests.Integration
         }
 
         /// <summary>
-        ///     Compensation is not poulated by a db at startup. With no data, 
+        ///     Compensation is not populated by a db at startup. With no data, 
         ///     no compensation should be found.
         /// </summary>
         [TestMethod]
@@ -166,7 +166,7 @@ namespace CodeCodeChallenge.Tests.Integration
             var requestContent = new JsonSerialization().ToJson(compensation);
             var postRequestTask = _httpClient.PostAsync("api/employee/compensation",
                new StringContent(requestContent, Encoding.UTF8, "application/json"));
-            // Post funcitonality should be covered in another test, the result
+            // Post functionality should be covered in another test, the result
             // needs to be collected so that the task finishes execution.
             var postResponse = postRequestTask.Result;
             Assert.AreEqual(HttpStatusCode.Created, postResponse.StatusCode);

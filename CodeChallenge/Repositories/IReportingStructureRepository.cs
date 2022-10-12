@@ -13,7 +13,7 @@ namespace CodeChallenge.Repositories
         ///     Employee id
         /// </param>
         /// <returns>
-        ///     Found reporing structure, or null.
+        ///     Found reporting structure, or null.
         /// </returns>
         ReportingStructure GetByEmployeeId(String employeeId);
     }
