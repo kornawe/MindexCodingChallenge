@@ -134,7 +134,6 @@ namespace CodeCodeChallenge.Tests.Integration
 
             // Assert
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
-            var compensation = response.DeserializeContent<Compensation>();
         }
 
         [TestMethod]

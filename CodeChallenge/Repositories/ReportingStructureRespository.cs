@@ -57,7 +57,7 @@ namespace CodeChallenge.Repositories
 
             if (employee.DirectReports != null)
             {
-                for (int i = 0; i < employee.DirectReports.Count(); i++)
+                for (int i = 0; i < employee.DirectReports.Count; i++)
                 {
                     employee.DirectReports[i] = GetEmployeeById(employee.DirectReports[i].EmployeeId);
                 }
