@@ -41,15 +41,15 @@ namespace CodeCodeChallenge.Tests.Integration
             // Arrange
             var compensation = new Compensation()
             {
-                EmployeeId = Guid.NewGuid().ToString(),
+                EmployeeId = "16a596ae-edd3-4847-99fe-c4518e82c86f",
                 EffectiveDate = DateTime.Now,
-                Salary = 100000.00,
+                Salary = 100000.00M,
             };
 
             var requestContent = new JsonSerialization().ToJson(compensation);
 
             // Execute
-            var postRequestTask = _httpClient.PostAsync("api/compensation",
+            var postRequestTask = _httpClient.PostAsync("api/employee/compensation",
                new StringContent(requestContent, Encoding.UTF8, "application/json"));
             var response = postRequestTask.Result;
 
@@ -57,32 +57,13 @@ namespace CodeCodeChallenge.Tests.Integration
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
 
             var newCompensation = response.DeserializeContent<Compensation>();
-            Assert.IsNotNull(newCompensation.EmployeeId);
+            Assert.IsNotNull(newCompensation.Employee);
             Assert.AreEqual(compensation.EffectiveDate, newCompensation.EffectiveDate);
             Assert.AreEqual(compensation.Salary, newCompensation.Salary);
         }
 
-        /// <summary>
-        ///     Compensation is not poulated by a db at startup. With no data, 
-        ///     no compensation should be found.
-        /// </summary>
         [TestMethod]
-        public void GetCompensationById_Returns_NotFound()
-        {
-            // Arrange
-            var compensationId = "16a596ae-edd3-4847-99fe-c4518e82c86f";
-
-            // Execute
-            var getRequestTask = _httpClient.GetAsync($"api/compensation/{compensationId}");
-            var response = getRequestTask.Result;
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
-            var compensation = response.DeserializeContent<Compensation>();
-        }
-
-        [TestMethod]
-        public void GetCompensationById_Returns_Ok()
+        public void CreateCompensation_InvalidEmployeeId_Returns_BadRequest()
         {
             // Arrange
             // Post a new compensation before so that is can be queried during
@@ -91,11 +72,100 @@ namespace CodeCodeChallenge.Tests.Integration
             {
                 EmployeeId = Guid.NewGuid().ToString(),
                 EffectiveDate = DateTime.Now,
-                Salary = 100000.00,
+                Salary = 100000.00M,
             };
 
             var requestContent = new JsonSerialization().ToJson(compensation);
-            var postRequestTask = _httpClient.PostAsync("api/compensation",
+
+            // Execute
+            var postRequestTask = _httpClient.PostAsync("api/employee/compensation",
+               new StringContent(requestContent, Encoding.UTF8, "application/json"));
+            // Post funcitonality should be covered in another test, the result
+            // needs to be collected so that the task finishes execution.
+            var postResponse = postRequestTask.Result;
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.BadRequest, postResponse.StatusCode);
+        }
+
+        [TestMethod]
+        public void CreateCompensation_MissMatchedEmployeeId_Returns_BadRequest()
+        {
+            // Arrange
+            // Post a new compensation before so that is can be queried during
+            // the execution portion
+            var compensation = new Compensation()
+            {
+                EmployeeId = "16a596ae-edd3-4847-99fe-c4518e82c86f",
+                Employee = new Employee()
+                {
+                    EmployeeId = Guid.NewGuid().ToString()
+                },
+                EffectiveDate = DateTime.Now,
+                Salary = 100000.00M,
+            };
+
+            var requestContent = new JsonSerialization().ToJson(compensation);
+
+            // Execute
+            var postRequestTask = _httpClient.PostAsync("api/employee/compensation",
+               new StringContent(requestContent, Encoding.UTF8, "application/json"));
+            // Post funcitonality should be covered in another test, the result
+            // needs to be collected so that the task finishes execution.
+            var postResponse = postRequestTask.Result;
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.BadRequest, postResponse.StatusCode);
+        }
+
+        /// <summary>
+        ///     Compensation is not poulated by a db at startup. With no data, 
+        ///     no compensation should be found.
+        /// </summary>
+        [TestMethod]
+        public void GetCompensationByEmployeeId_Returns_NotFound()
+        {
+            // Arrange
+            var employeeId = Guid.NewGuid().ToString();
+
+            // Execute
+            var getRequestTask = _httpClient.GetAsync($"api/employee/compensation/{employeeId}");
+            var response = getRequestTask.Result;
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+            var compensation = response.DeserializeContent<Compensation>();
+        }
+
+        [TestMethod]
+        public void GetCompensationByEmployeeId_ValidEmployeeNoCompensation_Returns_NotFound()
+        {
+            // Arrange
+            var employeeId = "b7839309-3348-463b-a7e3-5de1c168beb3";
+
+            // Execute
+            var getRequestTask = _httpClient.GetAsync($"api/employee/compensation/{employeeId}");
+            var response = getRequestTask.Result;
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [TestMethod]
+        public void GetCompensationByEmployeeId_Returns_Ok()
+        {
+            // Arrange
+            // Post a new compensation before so that is can be queried during
+            // the execution portion
+            var compensation = new Compensation()
+            {
+                EmployeeId = "b7839309-3348-463b-a7e3-5de1c168beb3",
+                EffectiveDate = DateTime.Now,
+                Salary = 100000.00M,
+            };
+
+            var requestContent = new JsonSerialization().ToJson(compensation);
+            var postRequestTask = _httpClient.PostAsync("api/employee/compensation",
                new StringContent(requestContent, Encoding.UTF8, "application/json"));
             // Post funcitonality should be covered in another test, the result
             // needs to be collected so that the task finishes execution.
@@ -103,14 +173,13 @@ namespace CodeCodeChallenge.Tests.Integration
             Assert.AreEqual(HttpStatusCode.Created, postResponse.StatusCode);
 
             // Execute
-            var getRequestTask = _httpClient.GetAsync($"api/compensation/{compensation.EmployeeId}");
+            var getRequestTask = _httpClient.GetAsync($"api/employee/compensation/{compensation.EmployeeId}");
             var response = getRequestTask.Result;
 
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
             var foundCompensation = response.DeserializeContent<Compensation>();
-            Assert.IsNotNull(foundCompensation.EmployeeId);
             Assert.AreEqual(compensation.EffectiveDate, foundCompensation.EffectiveDate);
             Assert.AreEqual(compensation.Salary, foundCompensation.Salary);
         }

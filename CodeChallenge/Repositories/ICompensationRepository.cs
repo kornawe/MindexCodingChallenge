@@ -6,9 +6,25 @@ namespace CodeChallenge.Repositories
 {
     public interface ICompensationRepository
     {
-        Compensation GetById(String id);
-        Compensation Add(Compensation employee);
-        Compensation Remove(Compensation employee);
+        /// <summary>
+        ///     Attempts to retrieve a <see cref="Compensation"/>
+        ///     for a given <paramref name="employeeId"/>.
+        /// </summary>
+        /// <param name="employeeId">
+        /// </param>
+        /// <returns>
+        ///     Compensation for the employee, if found or
+        ///     null if the employee could not be found.
+        /// </returns>
+        Compensation GetByEmployeeId(String employeeId);
+
+        /// <summary>
+        ///     Adds new compensation data, or 
+        /// </summary>
+        /// <param name="compensation"></param>
+        /// <returns></returns>
+        Compensation Add(Compensation compensation);
+        Compensation Remove(Compensation compensation);
         Task SaveAsync();
     }
 }

@@ -30,34 +30,14 @@ namespace CodeChallenge.Services
             return compensation;
         }
 
-        public Compensation GetById(string id)
+        public Compensation GetByEmployeeId(string emplyeeId)
         {
-            if(!String.IsNullOrEmpty(id))
+            if(!String.IsNullOrEmpty(emplyeeId))
             {
-                return _compensationRepository.GetById(id);
+                return _compensationRepository.GetByEmployeeId(emplyeeId);
             }
 
             return null;
-        }
-
-        public Compensation Replace(Compensation originalCompensation, Compensation newCompensation)
-        {
-            if (originalCompensation != null)
-            {
-                _compensationRepository.Remove(originalCompensation);
-                if (newCompensation != null)
-                {
-                    // ensure the original has been removed, otherwise EF will complain another entity w/ same id already exists
-                    _compensationRepository.SaveAsync().Wait();
-
-                    _compensationRepository.Add(newCompensation);
-                    // overwrite the new id with previous employee id
-                    newCompensation.EmployeeId = originalCompensation.EmployeeId;
-                }
-                _compensationRepository.SaveAsync().Wait();
-            }
-
-            return newCompensation;
         }
     }
 }
