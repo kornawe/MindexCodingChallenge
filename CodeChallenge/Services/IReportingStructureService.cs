@@ -8,6 +8,14 @@ namespace CodeChallenge.Services
 {
     public interface IReportingStructureService
     {
-        ReportingStructure GetById(String id);
+        /// <summary>
+        ///     Gets a <see cref="ReportingStructure"/> from a given
+        ///     <paramref name="employeeId"/>.
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns>
+        ///     Found <see cref="ReportingStructure"/> or null.
+        /// </returns>
+        ReportingStructure GetByEmployeeId(String employeeId);
     }
 }

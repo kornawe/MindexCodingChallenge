@@ -141,7 +141,7 @@ namespace CodeCodeChallenge.Tests.Integration
         public void GetCompensationByEmployeeId_ValidEmployeeNoCompensation_Returns_NotFound()
         {
             // Arrange
-            var employeeId = "b7839309-3348-463b-a7e3-5de1c168beb3";
+            var employeeId = "c0c2293d-16bd-4603-8e08-638a9d18b22c";
 
             // Execute
             var getRequestTask = _httpClient.GetAsync($"api/employee/compensation/{employeeId}");
