@@ -48,7 +48,7 @@ namespace CodeChallenge.Services
             {
                 return 0;
             }
-            // In the off chance that the reporting structure is 
+            // In the off chance that the reporting structure is circular, don't double count.
             if (visitedNodes.Contains(employee))
             {
                 return 0;
