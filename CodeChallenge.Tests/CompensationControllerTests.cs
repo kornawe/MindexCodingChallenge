@@ -66,8 +66,6 @@ namespace CodeCodeChallenge.Tests.Integration
         public void CreateCompensation_InvalidEmployeeId_Returns_BadRequest()
         {
             // Arrange
-            // Post a new compensation before so that is can be queried during
-            // the execution portion
             var compensation = new Compensation()
             {
                 EmployeeId = Guid.NewGuid().ToString(),
@@ -80,8 +78,6 @@ namespace CodeCodeChallenge.Tests.Integration
             // Execute
             var postRequestTask = _httpClient.PostAsync("api/employee/compensation",
                new StringContent(requestContent, Encoding.UTF8, "application/json"));
-            // Post functionality should be covered in another test, the result
-            // needs to be collected so that the task finishes execution.
             var postResponse = postRequestTask.Result;
 
             // Assert
@@ -92,8 +88,6 @@ namespace CodeCodeChallenge.Tests.Integration
         public void CreateCompensation_MissMatchedEmployeeId_Returns_BadRequest()
         {
             // Arrange
-            // Post a new compensation before so that is can be queried during
-            // the execution portion
             var compensation = new Compensation()
             {
                 EmployeeId = "16a596ae-edd3-4847-99fe-c4518e82c86f",
@@ -110,8 +104,6 @@ namespace CodeCodeChallenge.Tests.Integration
             // Execute
             var postRequestTask = _httpClient.PostAsync("api/employee/compensation",
                new StringContent(requestContent, Encoding.UTF8, "application/json"));
-            // Post functionality should be covered in another test, the result
-            // needs to be collected so that the task finishes execution.
             var postResponse = postRequestTask.Result;
 
             // Assert
