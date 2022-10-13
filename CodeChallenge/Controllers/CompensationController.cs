@@ -25,29 +25,21 @@ namespace CodeChallenge.Controllers
         public IActionResult CreateCompensation([FromBody] Compensation compensation)
         {
             _logger.LogDebug($"Received compensation create request for '{compensation.EmployeeId}'");
-            
+
             // Make sure the compensation that was sent to us was good.
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Check that the employee exists.
-            var linkedEmployee = _employeeService.GetById(compensation.EmployeeId);
-            if (linkedEmployee == null)
+            var newCompensation = _compensationService.Create(compensation);
+
+            if (newCompensation == null)
             {
                 return BadRequest(ModelState);
             }
 
-            // If an employee was specified, verify that the employee id is valid
-            if (compensation.Employee != null && compensation.Employee.EmployeeId != compensation.EmployeeId)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _compensationService.Create(compensation);
-
-            return CreatedAtRoute("getCompensationByEmployeeId", new { employeeId = compensation.EmployeeId }, compensation);
+            return CreatedAtRoute("getCompensationByEmployeeId", new { employeeId = compensation.EmployeeId }, newCompensation);
         }
 
         [HttpGet("{employeeId}", Name = "getCompensationByEmployeeId")]

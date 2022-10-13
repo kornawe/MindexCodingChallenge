@@ -8,7 +8,24 @@ namespace CodeChallenge.Services
 {
     public interface ICompensationService
     {
-        Compensation GetByEmployeeId(String id);
+        /// <summary>
+        ///     Attempts to get a <see cref="Compensation"/> from a given
+        ///     <paramref name="employeeId"/>
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns>
+        ///     The found object, or null.
+        /// </returns>
+        Compensation GetByEmployeeId(String employeeId);
+
+        /// <summary>
+        ///     Creates record for a <see cref="Compensation"/>.
+        /// </summary>
+        /// <param name="compensation"></param>
+        /// <returns>
+        ///     The created compensation, or null if 
+        ///     <paramref name="compensation"/> was invalid.
+        /// </returns>
         Compensation Create(Compensation compensation);
     }
 }
