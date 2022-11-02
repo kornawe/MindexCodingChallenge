@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Text.Json.Serialization;
 using CodeChallenge.Data;
 using CodeChallenge.Repositories;
 using CodeChallenge.Services;
@@ -20,7 +20,10 @@ namespace CodeChallenge.Config
             var builder = WebApplication.CreateBuilder(args);
 
             builder.UseEmployeeDB();
-            
+
+            builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
             AddServices(builder.Services);
 
             var app = builder.Build();
@@ -44,6 +47,10 @@ namespace CodeChallenge.Config
 
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IEmployeeRepository, EmployeeRespository>();
+            services.AddScoped<ICompensationService, CompensationService>();
+            services.AddScoped<ICompensationRepository, CompensationRespository>();
+            services.AddScoped<IReportingStructureService, ReportingStructureService>();
+            services.AddScoped<IReportingStructureRepository, ReportingStructureRepository>();
 
             services.AddControllers();
         }
